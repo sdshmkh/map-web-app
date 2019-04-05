@@ -11,10 +11,11 @@ class Display extends Component {
         };
         this.textSearch = this.textSearch.bind(this);
         this.updateQuery = this.updateQuery.bind(this);
+        this.currentLocation = this.currentLocation.bind(this);
     }
 
     componentDidMount() {
-        window.currentLocation()
+        this.currentLocation()
             .then((latlng) => {
                 this.setState({ ...this.state, latlng: latlng });
             }).then(() => {
@@ -33,6 +34,14 @@ class Display extends Component {
     updateQuery(event) {
         this.setState({ ...this.state, query: event.target.value });
     }
+
+    currentLocation() {
+        return new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(pos => {
+            resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+          })
+        })
+      }
 
     render() {
         return (
