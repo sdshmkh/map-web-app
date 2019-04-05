@@ -6,16 +6,7 @@ class Display extends Component {
         super(props);
         this.state = {
             query : "",
-            results : [
-                {
-                    name : "Shahaji's Pizza",
-                    rating : 4.7
-                },
-                {
-                    name : "Shahaji's Pizza",
-                    rating : 4.7
-                }
-            ], 
+            results : [], 
             latlng : {}
         };
         this.textSearch = this.textSearch.bind(this);
@@ -23,10 +14,20 @@ class Display extends Component {
     }
 
     componentDidMount() {
-
+        window.currentLocation()
+        .then((latlng) => {
+            this.setState({...this.state, latlng : latlng});
+        }).then(() => {
+            window.nearBySearch(this.state.latlng)
+            .then((results) => this.setState({...this.state, results : results}))
+        })
     }
 
     textSearch() {
+        window.textSearch(this.state.latlng, this.state.query)
+        .then((results) => {
+            this.setState({...this.state, results : results});
+        })
     }
 
     updateQuery(event) {
@@ -40,14 +41,14 @@ class Display extends Component {
                     <div className="input-group-prepend">
                         <span className="input-group-text" id="inputGroup-sizing-lg">Search</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  placeholder='Pizza' onChange={(event) => this.updateQuery(event)} />
-                    <input className='btn btn-primary' type='submit'/>
+                    <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  placeholder='Pizza' onChange={(event) => this.updateQuery(event)} />
+                    <input className='btn btn-primary' type='submit' onClick={this.textSearch}/>
                 </div>
                 <div className='result-container'>
                 {
                     this.state.results.map((result, index) => {
                         return (
-                            <Result key={index} name={result.name} rating={result.rating}/>
+                            <Result key={index} place={result}/>
                         )
                     })
                 }

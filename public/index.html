@@ -27,45 +27,53 @@
       }
 
       function nearBySearch(latlng) {
-        let coords = new google.maps.LatLng(latlng.lat, latlng.lng);
-        map = new google.maps.Map(document.getElementById('map'), {
+          let coords = new window.google.maps.LatLng(latlng.lat, latlng.lng);
+          map = new google.maps.Map(document.getElementById('map'), {
               center: latlng,
               zoom: 15
             });
-
+          new google.maps.Marker({
+          position: coords,
+          map: map,
+          title: 'User'
+        });
         var request = {
           location: coords,
           radius: '500',
           type: ['restaurant']
         };
 
+        return new Promise((resolve, reject) => {
         service = new google.maps.places.PlacesService(map);
-        service.nearbySearch(request, (results, status) => {
-          results.map(result => {
-            console.log(result)
-          })
-        });
+         service.nearbySearch(request, (results, status) => {
+           status == google.maps.places.PlacesServiceStatus.OK ? resolve(results) : reject("Google returned an error");
+         });
+        })
       }
 
       function textSearch(latlng, query) {
         let coords = new google.maps.LatLng(latlng.lat, latlng.lng);
         map = new google.maps.Map(document.getElementById('map'), {
         center: coords,
-        zoom: 15
+        zoom: 12
         });
-
+        
         var request = {
           location: coords,
           radius: '500',
-          query: 'restaurant'
+          query: query
         };
-
-        service = new google.maps.places.PlacesService(map);
-        service.textSearch(request, (results, status) => {
-          results.map(result => {
-            console.log(result);
-          });
+        new google.maps.Marker({
+          position: coords,
+          map: map,
+          title: 'User' 
         });
+        service = new google.maps.places.PlacesService(map);
+        return new Promise((resolve, reject) => {
+        service.textSearch(request, (results, status) => {
+          status == google.maps.places.PlacesServiceStatus.OK ? resolve(results) : reject("Google returned an error");
+        });
+        })
       }
 
       function createMarker(latlng, title) {
@@ -73,13 +81,14 @@
         var marker = new google.maps.Marker({
           position: coords,
           map: map,
-          title: title
+          title: title,
+          icon : 'https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png'
         });
         markers.push(marker);
       }
 
       function currentLocation() {
-        new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(pos => {
             resolve({lat : pos.coords.latitude, lng : pos.coords.longitude});
           })
@@ -97,7 +106,7 @@
       }
 
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByXfLvL9YYZ4_8WorP9kCWLmAiIoE8JEA&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByXfLvL9YYZ4_8WorP9kCWLmAiIoE8JEA&callback=initMap&libraries=places"
     async defer></script>
   </head>
   <body>
