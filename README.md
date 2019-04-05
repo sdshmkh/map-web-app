@@ -1,4 +1,12 @@
+## Welcome to Maps!
+
+![alt text](https://imgur.com/a/ryBGfTk)
+
+This is an application which loads up with near by restaurants around your current location.
+The application also has a search feature which loads up nearby places based on the key word.
+By Clicking on the blue information card, the place loads up on the map with the users current location.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 ## Prequisite
 
 In the project directory, please run:
