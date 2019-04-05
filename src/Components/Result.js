@@ -4,16 +4,16 @@ class Result extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            location : {
-                lat : props.place.geometry.location.lat(),
-                lng : props.place.geometry.location.lng()
+            location: {
+                lat: props.place.geometry.location.lat(),
+                lng: props.place.geometry.location.lng()
             }
         }
         window.createMarker(this.state.location, props.place.name)
     }
 
     render() {
-        return(
+        return (
             <div onClick={() => window.showClickedResult(this.state.location, this.props.place.name)} className='result-container alert alert-primary'>
                 <p>
                     {this.props.place.name}

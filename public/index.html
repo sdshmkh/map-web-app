@@ -1,116 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Simple Map</title>
-    <meta name="viewport" content="initial-scale=1.0">
-    <meta charset="utf-8">
-    <style>
-      #map {
-        height: 95vh;
-        width: 70vw;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-    <script>
-      var map;
-      var markers = [];
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
-        });
-      }
 
-      function nearBySearch(latlng) {
-          let coords = new window.google.maps.LatLng(latlng.lat, latlng.lng);
-          map = new google.maps.Map(document.getElementById('map'), {
-              center: latlng,
-              zoom: 15
-            });
-          new google.maps.Marker({
-          position: coords,
-          map: map,
-          title: 'User'
-        });
-        var request = {
-          location: coords,
-          radius: '500',
-          type: ['restaurant']
-        };
+<head>
+  <title>Simple Map</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <style>
+    #map {
+      height: 95vh;
+      width: 70vw;
+    }
 
-        return new Promise((resolve, reject) => {
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <script>
+    var map;
+    var markers = [];
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8
+      });
+    }
+
+    function nearBySearch(latlng) {
+      let coords = new window.google.maps.LatLng(latlng.lat, latlng.lng);
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: latlng,
+        zoom: 15
+      });
+      new google.maps.Marker({
+        position: coords,
+        map: map,
+        title: 'User'
+      });
+      var request = {
+        location: coords,
+        radius: '500',
+        type: ['restaurant']
+      };
+
+      return new Promise((resolve, reject) => {
         service = new google.maps.places.PlacesService(map);
-         service.nearbySearch(request, (results, status) => {
-           status == google.maps.places.PlacesServiceStatus.OK ? resolve(results) : reject("Google returned an error");
-         });
-        })
-      }
+        service.nearbySearch(request, (results, status) => {
+          status == google.maps.places.PlacesServiceStatus.OK ? resolve(results) : reject("Google returned an error");
+        });
+      })
+    }
 
-      function textSearch(latlng, query) {
-        let coords = new google.maps.LatLng(latlng.lat, latlng.lng);
-        map = new google.maps.Map(document.getElementById('map'), {
+    function textSearch(latlng, query) {
+      let coords = new google.maps.LatLng(latlng.lat, latlng.lng);
+      map = new google.maps.Map(document.getElementById('map'), {
         center: coords,
         zoom: 12
-        });
-        
-        var request = {
-          location: coords,
-          radius: '500',
-          query: query
-        };
-        new google.maps.Marker({
-          position: coords,
-          map: map,
-          title: 'User' 
-        });
-        service = new google.maps.places.PlacesService(map);
-        return new Promise((resolve, reject) => {
+      });
+
+      var request = {
+        location: coords,
+        radius: '500',
+        query: query
+      };
+      new google.maps.Marker({
+        position: coords,
+        map: map,
+        title: 'User'
+      });
+      service = new google.maps.places.PlacesService(map);
+      return new Promise((resolve, reject) => {
         service.textSearch(request, (results, status) => {
           status == google.maps.places.PlacesServiceStatus.OK ? resolve(results) : reject("Google returned an error");
         });
+      })
+    }
+
+    function createMarker(latlng, title) {
+      let coords = new google.maps.LatLng(latlng.lat, latlng.lng);
+      var marker = new google.maps.Marker({
+        position: coords,
+        map: map,
+        title: title,
+        icon: 'https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png'
+      });
+      markers.push(marker);
+    }
+
+    function currentLocation() {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(pos => {
+          resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         })
-      }
+      })
+    }
 
-      function createMarker(latlng, title) {
-        let coords = new google.maps.LatLng(latlng.lat, latlng.lng);
-        var marker = new google.maps.Marker({
-          position: coords,
-          map: map,
-          title: title,
-          icon : 'https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png'
-        });
-        markers.push(marker);
-      }
+    function removeAllMarkers() {
+      markers.map(marker => marker.setMap(null))
+      markers = [];
+    }
 
-      function currentLocation() {
-        return new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(pos => {
-            resolve({lat : pos.coords.latitude, lng : pos.coords.longitude});
-          })
-        })
-      }
+    function showClickedResult(latlng, title) {
+      removeAllMarkers();
+      createMarker(latlng, title);
+    }
 
-      function removeAllMarkers() {
-        markers.map(marker => marker.setMap(null))
-        markers = [];
-      }
-
-      function showClickedResult(latlng, title) {
-        removeAllMarkers();
-        createMarker(latlng, title);
-      }
-
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByXfLvL9YYZ4_8WorP9kCWLmAiIoE8JEA&callback=initMap&libraries=places"
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByXfLvL9YYZ4_8WorP9kCWLmAiIoE8JEA&callback=initMap&libraries=places"
     async defer></script>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+</body>
+
 </html>
