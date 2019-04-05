@@ -26,13 +26,14 @@
       }
 
       function nearBySearch(latlng) {
+        let coords = new google.maps.LatLng(latlng.lat, latlng.lng);
         map = new google.maps.Map(document.getElementById('map'), {
               center: latlng,
               zoom: 15
             });
 
         var request = {
-          location: latlng,
+          location: coords,
           radius: '500',
           type: ['restaurant']
         };
@@ -43,6 +44,44 @@
             console.log(result)
           })
         });
+      }
+
+      function textSearch(latlng, query) {
+        let coords = new google.maps.LatLng(latlng.lat, latlng.lng);
+        map = new google.maps.Map(document.getElementById('map'), {
+        center: coords,
+        zoom: 15
+        });
+
+        var request = {
+          location: coords,
+          radius: '500',
+          query: 'restaurant'
+        };
+
+        service = new google.maps.places.PlacesService(map);
+        service.textSearch(request, (results, status) => {
+          results.map(result => {
+            console.log(result);
+          });
+        });
+      }
+
+      function createMarker(latlng, title) {
+        let coords = new google.maps.LatLng(latlng.lat, latlng.lng);
+        var marker = new google.maps.Marker({
+          position: coords,
+          map: map,
+          title: title
+        });
+      }
+
+      function currentLocation() {
+        new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(pos => {
+            resolve({lat : pos.coords.latitude, lng : pos.coords.longitude});
+          })
+        })
       }
 
     </script>
