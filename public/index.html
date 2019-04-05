@@ -32,7 +32,11 @@
               center: latlng,
               zoom: 15
             });
-
+          new google.maps.Marker({
+          position: coords,
+          map: map,
+          title: 'User'
+        });
         var request = {
           location: coords,
           radius: '500',
@@ -51,15 +55,19 @@
         let coords = new google.maps.LatLng(latlng.lat, latlng.lng);
         map = new google.maps.Map(document.getElementById('map'), {
         center: coords,
-        zoom: 15
+        zoom: 12
         });
-
+        
         var request = {
           location: coords,
           radius: '500',
-          query: 'restaurant'
+          query: query
         };
-
+        new google.maps.Marker({
+          position: coords,
+          map: map,
+          title: 'User' 
+        });
         service = new google.maps.places.PlacesService(map);
         return new Promise((resolve, reject) => {
         service.textSearch(request, (results, status) => {
@@ -73,7 +81,8 @@
         var marker = new google.maps.Marker({
           position: coords,
           map: map,
-          title: title
+          title: title,
+          icon : 'https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png'
         });
         markers.push(marker);
       }

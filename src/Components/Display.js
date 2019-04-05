@@ -6,16 +6,7 @@ class Display extends Component {
         super(props);
         this.state = {
             query : "",
-            results : [
-                {
-                    name : "Shahaji's Pizza",
-                    rating : 4.7
-                },
-                {
-                    name : "Shahaji's Pizza",
-                    rating : 4.7
-                }
-            ], 
+            results : [], 
             latlng : {}
         };
         this.textSearch = this.textSearch.bind(this);
@@ -26,18 +17,16 @@ class Display extends Component {
         window.currentLocation()
         .then((latlng) => {
             this.setState({...this.state, latlng : latlng});
-        }).then(() => console.log(this.state))
-        .then(() => {
+        }).then(() => {
             window.nearBySearch(this.state.latlng)
-            .then((results) => this.setState({...this.state, results : results})).then(() => console.log('final state',this.state));
-        }).then()
+            .then((results) => this.setState({...this.state, results : results}))
+        })
     }
 
     textSearch() {
         window.textSearch(this.state.latlng, this.state.query)
         .then((results) => {
             this.setState({...this.state, results : results});
-            console.log('called from here', results)
         })
     }
 
@@ -59,7 +48,7 @@ class Display extends Component {
                 {
                     this.state.results.map((result, index) => {
                         return (
-                            <Result key={index} name={result.name} rating={result.rating}/>
+                            <Result key={index} place={result}/>
                         )
                     })
                 }
