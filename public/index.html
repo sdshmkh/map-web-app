@@ -91,6 +91,11 @@
         markers = [];
       }
 
+      function showClickedResult(latlng, title) {
+        removeAllMarkers();
+        createMarker(latlng, title);
+      }
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByXfLvL9YYZ4_8WorP9kCWLmAiIoE8JEA&callback=initMap"
     async defer></script>
