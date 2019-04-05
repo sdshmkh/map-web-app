@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Display from './Components/Display';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 class App extends Component {
   render() {
@@ -9,7 +10,12 @@ class App extends Component {
         <header className="App-header">
           Welcome to Maps
         </header>
-        <div id='map'></div>
+        <div className="App-container">
+          <div className='spacing-display'>
+            <Display />
+          </div>
+          <div id='map'></div>
+        </div>
       </div>
     );
   }
