@@ -23,10 +23,22 @@ class Display extends Component {
     }
 
     componentDidMount() {
-
+        window.currentLocation()
+        .then((latlng) => {
+            this.setState({...this.state, latlng : latlng});
+        }).then(() => console.log(this.state))
+        .then(() => {
+            window.nearBySearch(this.state.latlng)
+            .then((results) => this.setState({...this.state, results : results})).then(() => console.log('final state',this.state));
+        }).then()
     }
 
     textSearch() {
+        window.textSearch(this.state.latlng, this.state.query)
+        .then((results) => {
+            this.setState({...this.state, results : results});
+            console.log('called from here', results)
+        })
     }
 
     updateQuery(event) {
@@ -40,8 +52,8 @@ class Display extends Component {
                     <div className="input-group-prepend">
                         <span className="input-group-text" id="inputGroup-sizing-lg">Search</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  placeholder='Pizza' onChange={(event) => this.updateQuery(event)} />
-                    <input className='btn btn-primary' type='submit'/>
+                    <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"  placeholder='Pizza' onChange={(event) => this.updateQuery(event)} />
+                    <input className='btn btn-primary' type='submit' onClick={this.textSearch}/>
                 </div>
                 <div className='result-container'>
                 {
