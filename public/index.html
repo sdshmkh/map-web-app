@@ -24,6 +24,27 @@
           zoom: 8
         });
       }
+
+      function nearBySearch(latlng) {
+        map = new google.maps.Map(document.getElementById('map'), {
+              center: latlng,
+              zoom: 15
+            });
+
+        var request = {
+          location: latlng,
+          radius: '500',
+          type: ['restaurant']
+        };
+
+        service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, (results, status) => {
+          results.map(result => {
+            console.log(result)
+          })
+        });
+      }
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByXfLvL9YYZ4_8WorP9kCWLmAiIoE8JEA&callback=initMap"
     async defer></script>
