@@ -1,6 +1,6 @@
 ## Welcome to Maps!
 
-![alt text](https://github.com/shahajideshmukh31/map-web-app/map-web-app.png)
+![alt text](https://raw.githubusercontent.com/shahajideshmukh31/map-app-web/master/web-map-app.PNG)
 
 This is an application which loads up with near by restaurants around your current location.
 The application also has a search feature which loads up nearby places based on the key word.
