@@ -9,7 +9,15 @@ class Result extends React.Component {
                 lng: props.place.geometry.location.lng()
             }
         }
-        window.createMarker(this.state.location, props.place.name)
+    }
+
+    componentDidMount() {
+        console.log('Component did mount')
+        window.createMarker(this.state.location, this.props.place.name)
+    }
+
+    componentDidUpdate() {
+        window.createMarker(this.state.location, this.props.place.name)
     }
 
     render() {
