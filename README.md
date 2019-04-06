@@ -1,6 +1,8 @@
 ## Welcome to Maps!
 
-![Application Screenshot](/map-web-app.PNG?raw=true)
+![Application Screenshot I](/map-web-app.PNG?raw=true)
+
+![Application Screenshot II](/map-web-app-2.PNG?raw=true)
 
 This is an application which loads up with near by restaurants around your current location.
 The application also has a search feature which loads up nearby places based on the key word.
