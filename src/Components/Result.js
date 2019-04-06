@@ -12,7 +12,6 @@ class Result extends React.Component {
     }
 
     componentDidMount() {
-        console.log('Component did mount')
         window.createMarker(this.state.location, this.props.place.name)
     }
 
